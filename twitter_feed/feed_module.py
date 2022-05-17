@@ -30,6 +30,9 @@ def parse_file_inputs(file_paths: List[str]) -> Tuple[Dict, List]:
     tweets -> List[List[str]] - a list of tweets and their sender
     """
 
+    if len(file_paths) != 2:
+        raise Exception("This function expects only two valid file paths!")
+
     users_dict: Dict[str, Set[str]] = dict()
     tweets_list: List[List[str]] = list()
     with open(file_paths[0], 'r', encoding='utf8') as user_file:
@@ -67,15 +70,22 @@ def format_output(users: Dict[str, Set[str]], tweets: List[List[str]]) -> None:
     This function prints out a simulated twitter feed given a dict of users including the people
     they follow and finally a list of tweets including the sender
     """
+
+    # added this for the sake of testing - otherwise i would split this funtion a little bit more
+    formatted_output = ''
+
     sorted_users: List[str] = sorted(users.keys())
     for user in sorted_users:
         users_followed: List[str] = users[user]
         print(user)
+        formatted_output += 'user\n'
 
         for item in tweets:
             if item[0] in [user] + list(users_followed):  # user in the list of people they follow including themself
                 tweet: str = item[1]
                 print(f'\t@{item[0]}: {tweet}')
+                formatted_output += f'\t@{item[0]}: {tweet}\n'
+    return formatted_output
 
 
 def parse_args() -> List[str]:
