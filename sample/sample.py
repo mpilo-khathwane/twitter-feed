@@ -7,5 +7,4 @@ sys.argv.append('./sample/user.txt')
 sys.argv.append('./sample/tweet.txt')
 
 input_data: Tuple[Dict, List[List[str]]] = parse_args()
-print(input_data)
 format_output(users=input_data[0], tweets=input_data[1])

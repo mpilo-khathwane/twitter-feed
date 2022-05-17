@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from typing import Dict, List, Set, Tuple
+from typing import Any, Dict, List, Set, Tuple
 
 usage_instructions: str = """
 Usage: twitter-feed app requires two extra arguments - two files:
@@ -12,7 +12,7 @@ Usage: twitter-feed app requires two extra arguments - two files:
 
 def main() -> None:
     """The main entrypoint for this script used in the setup.py file."""
-    input_data: Tuple[Dict, List[List[str]]] = parse_args()
+    input_data: Tuple[Dict[Any, Any], List[List[str]]] = parse_args()
     format_output(users=input_data[0], tweets=input_data[1])
 
 
@@ -65,7 +65,7 @@ def parse_file_inputs(file_paths: List[str]) -> Tuple[Dict, List]:
     return users_dict, tweets_list
 
 
-def format_output(users: Dict[str, Set[str]], tweets: List[List[str]]) -> None:
+def format_output(users: Dict[str, Set[str]], tweets: List[List[str]]) -> str:
     """
     This function prints out a simulated twitter feed given a dict of users including the people
     they follow and finally a list of tweets including the sender
@@ -76,7 +76,7 @@ def format_output(users: Dict[str, Set[str]], tweets: List[List[str]]) -> None:
 
     sorted_users: List[str] = sorted(users.keys())
     for user in sorted_users:
-        users_followed: List[str] = users[user]
+        users_followed: Set[str] = users[user]
         print(user)
         formatted_output += 'user\n'
 
@@ -88,17 +88,16 @@ def format_output(users: Dict[str, Set[str]], tweets: List[List[str]]) -> None:
     return formatted_output
 
 
-def parse_args() -> List[str]:
-    print(sys.argv)
-    if len(sys.argv) != 3:
-        print(usage_instructions)
-        exit()
+def parse_args() -> Tuple[Dict[Any, Any], List[List[str]]]:
+    """
+    This function parses the data obtained from the file inputs and reformats it as expected by the app
+    """
 
     if len(sys.argv) == 3 and is_files(sys.argv[1:]):
         return parse_file_inputs(sys.argv[1:])
     else:
-        sys.argv.pop(0)
-        return sys.argv
+        print(usage_instructions)
+        exit()
 
 
 if __name__ == '__main__':
