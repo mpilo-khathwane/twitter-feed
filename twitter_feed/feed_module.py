@@ -79,6 +79,7 @@ def format_output(users: Dict[str, Set[str]], tweets: List[List[str]]) -> None:
 
 
 def parse_args() -> List[str]:
+    print(sys.argv)
     if len(sys.argv) != 3:
         print(usage_instructions)
         exit()
